@@ -4,7 +4,7 @@ const UglifyPlugin = require('uglifyjs-webpack-plugin')
 const webpack = require('webpack')
 
 const PRODUCTION_CONFIG = {
-    mode: 'development',
+    mode: 'production',
     plugins: [
         new UglifyPlugin(),
         new webpack.NamedChunksPlugin()

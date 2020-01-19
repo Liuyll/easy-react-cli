@@ -9,8 +9,8 @@ module.exports = {
     entry: path.resolve(__dirname,'../../src/index.tsx'),
     output: {
         path: path.resolve(__dirname,'../../build'),
-        filename: '[name].[contenthash:8].file.js',
-        chunkFilename: '[name].[chunkhash:8].chunk.js'
+        filename: this.mode === 'production' ? '[name].[contenthash:8].file.js' : '[name].[hash:8].file.js',
+        chunkFilename: this.mode === 'production' ? '[name].[chunkhash:8].chunk.js' : '[name].[hash:8].chunk.js'
     },
     module: {
         rules: [

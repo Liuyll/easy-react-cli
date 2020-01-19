@@ -1,6 +1,8 @@
 const resolveApp = require('./path').resolveApp
+const common = require('./webpack.config')
+const merge = require('webpack-merge')
 
-module.exports = {
+module.exports = merge(common,{
     mode: 'development',
     devServer: {
         contentBase: resolveApp('../../public'),
@@ -8,4 +10,4 @@ module.exports = {
         compress: false,
         hot: true
     }
-}
+})
