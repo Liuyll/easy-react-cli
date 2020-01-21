@@ -4,13 +4,15 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const resolveApp = require('./path').resolveApp
+const tools = require('./tools')
 
 module.exports = {
     entry: path.resolve(__dirname,'../../src/index.tsx'),
     output: {
         path: path.resolve(__dirname,'../../build'),
         filename: this.mode === 'production' ? '[name].[contenthash:8].file.js' : '[name].[hash:8].file.js',
-        chunkFilename: this.mode === 'production' ? '[name].[chunkhash:8].chunk.js' : '[name].[hash:8].chunk.js'
+        chunkFilename: this.mode === 'production' ? '[name].[chunkhash:8].chunk.js' : '[name].[hash:8].chunk.js',
+        publicPath: tools.judgeMode(this.mode,resolveApp('../../build'),'/')
     },
     module: {
         rules: [
