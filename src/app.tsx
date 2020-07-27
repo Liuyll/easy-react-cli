@@ -1,7 +1,8 @@
 ///<reference types="webpack-env" />
 
 import * as React from 'react'
-import Test from './test.jsx'
+import './app.less'
+import * as src from '../public/test.jpg'
 
 if(module.hot){
     /* 该dependency还需要研究
@@ -16,10 +17,10 @@ if(module.hot){
 
 const App:React.SFC<any> = function(){
     return (
-        <div>
+        <div className="wrap">
             Welcome to Easy-React
             <div>
-                <Test></Test>
+                <img src={src} />
             </div>
         </div>
     )

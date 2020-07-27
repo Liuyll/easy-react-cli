@@ -1,5 +1,4 @@
 const path = require('path')
-const devServer = require('webpack-dev-server')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
@@ -12,7 +11,7 @@ module.exports = {
         path: path.resolve(__dirname,'../../build'),
         filename: this.mode === 'production' ? '[name].[contenthash:8].file.js' : '[name].[hash:8].file.js',
         chunkFilename: this.mode === 'production' ? '[name].[chunkhash:8].chunk.js' : '[name].[hash:8].chunk.js',
-        publicPath: tools.judgeMode(this.mode,resolveApp('../../build'),'/')
+        publicPath: tools.judgeMode(this.mode,resolveApp('../../build'),'/'),
     },
     module: {
         rules: [
@@ -32,8 +31,12 @@ module.exports = {
                 ]
             },
             {
-                test: /\.less/,
+                test: /\.css/,
                 use: ['css-loader']
+            },
+            {
+                test: /\.less/,
+                use: ['style-loader','css-loader','less-loader']
             },
             {
                 test: /\.(js|jsx)$/,
@@ -45,7 +48,24 @@ module.exports = {
                         plugins: []
                     }, 
                 }]
-            }
+            },
+            {
+                test: /\.(jpg|png)$/,
+                use: [{
+                    loader: 'url-loader'
+                }]
+            },
+            // {
+            //     test: /\.(png|jpg|gif)$/,
+            //     use: [
+            //         {
+            //             loader: "url-loader",
+            //             options: {
+            //                 limit: 8 * 1024 // 当图片小于8M后使用后base64进行打包
+            //             }
+            //         }
+            //     ]
+            // }
         ],
         // exclude:path.resolve(__dirname,'../../node_modules')
     },
@@ -100,9 +120,5 @@ module.exports = {
             '@Components': path.resolve(__dirname,'../../src/components')
         },
         extensions: ['.ts', '.tsx', '.js', 'jsx']
-    },
-    devServer: {
-        port: '8080',
-        contentBase: path.resolve(__dirname,'../../public')
     }
 }

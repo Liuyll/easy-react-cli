@@ -14,7 +14,7 @@ module.exports = merge(common,{
                 to: '/'
             }]
         },
-        contentBase: resolveApp('../../public'),
+        contentBase: resolveApp('../../build'),
         port: 9000,
         compress: false,
         hot: true,
