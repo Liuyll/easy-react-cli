@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import './app.less'
-import * as src from '../public/test.jpg'
+import src from '../public/test.jpg'
 
 if(module.hot){
     /* 该dependency还需要研究
