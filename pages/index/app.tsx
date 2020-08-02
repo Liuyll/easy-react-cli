@@ -3,7 +3,7 @@
 import * as React from 'react'
 import './app.less'
 import { Button } from 'antd'
-import * as src from '../../public/test.jpg'
+import src from '../../public/test.jpg'
 
 if(module.hot){
     /* 该dependency还需要研究
@@ -20,7 +20,7 @@ const App:React.SFC<any> = function(){
     return (
         <div className="wrap">
             Welcome to Easy-React
-            <div>
+            <div className="content">
                 <Button>test</Button>
                 <img src={src} />
             </div>

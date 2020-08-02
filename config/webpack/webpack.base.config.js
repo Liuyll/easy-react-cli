@@ -2,9 +2,10 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const AnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-const resolveApp = require('./path').resolveApp
-const tools = require('./tools')
+const resolveApp = require('./tools/path').resolveApp
+const tools = require('./tools/tools')
 const getEntries = tools.getEntries
 const generateHTMLPlugin = tools.generateHTMLPlugin
 
@@ -37,11 +38,11 @@ module.exports = {
             },
             {
                 test: /\.css/,
-                use: ['css-loader']
+                use: [MiniCssExtractPlugin.loader,'css-loader']
             },
             {
                 test: /\.less/,
-                use: ['style-loader','css-loader','less-loader']
+                use: [MiniCssExtractPlugin.loader,'css-loader','less-loader']
             },
             {
                 test: /\.(js|jsx)$/,
@@ -66,6 +67,10 @@ module.exports = {
     plugins: [
         new CleanWebpackPlugin({
             cleanOnceBeforeBuildPatterns: resolveApp('../../build')
+        }),
+        new MiniCssExtractPlugin({
+            filename: '[name].css',
+            chunkFilename: '[id].css',
         }),
         // new AnalyzerPlugin(),
         ...generateHTMLPlugin(HtmlWebpackPlugin)
@@ -103,15 +108,12 @@ module.exports = {
                     name: 'vendors',
                     priority: 10
                 },
-               
-                // default: {
-                //     test: '*',
-                //     name: 'default',
-                //     minChunks: 2,
-                //     priority: -20,
-                //     maxInitialRequests: 3,
-                //     reuseExistingChunk: true
-                // }
+                asyncComponent: {
+                    test: '*',
+                    chunks: 'async',
+                    name: 'async-component',
+                    priority: 30
+                }
             }
         }
     },

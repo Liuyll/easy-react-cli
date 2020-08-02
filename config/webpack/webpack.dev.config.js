@@ -1,7 +1,7 @@
-const resolveApp = require('./path').resolveApp
+const resolveApp = require('./tools/path').resolveApp
 const common = require('./webpack.base.config')
 const merge = require('webpack-merge')
-const mocktools = require('./mocktool')
+const mocktools = require('./tools/mocktool')
 const HotModuleReplacementPlugin = require('webpack').HotModuleReplacementPlugin
 
 module.exports = merge(common,{
