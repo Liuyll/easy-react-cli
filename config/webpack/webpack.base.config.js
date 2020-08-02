@@ -67,7 +67,7 @@ module.exports = {
         new CleanWebpackPlugin({
             cleanOnceBeforeBuildPatterns: resolveApp('../../build')
         }),
-        new AnalyzerPlugin(),
+        // new AnalyzerPlugin(),
         ...generateHTMLPlugin(HtmlWebpackPlugin)
     ],
     optimization: {

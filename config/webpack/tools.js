@@ -22,7 +22,7 @@ function generateHTMLPluginTemplate(name,chunk) {
         template: templateSrc,
         filename: `${name}.html`,
         inject: true,
-        chunks: ['commons','vendors',chunk]
+        chunks: ['commons','vendors',`runtime~${name}`,chunk]
     }
 }
 
