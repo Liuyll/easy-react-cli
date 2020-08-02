@@ -10,7 +10,6 @@ const generateHTMLPlugin = tools.generateHTMLPlugin
 
 module.exports = {
     entry: {
-        index: path.resolve(__dirname,'../../src/index.tsx'),
         ...getEntries()
     },
     output: {
@@ -65,11 +64,6 @@ module.exports = {
         ],
     },
     plugins: [
-        new HtmlWebpackPlugin({
-            template: path.resolve(__dirname,'../../src/index.html'),
-            inject: true,
-            filename: 'index.html'
-        }),
         new CleanWebpackPlugin({
             cleanOnceBeforeBuildPatterns: resolveApp('../../build')
         }),

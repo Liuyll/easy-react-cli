@@ -3,7 +3,7 @@
 import * as React from 'react'
 import './app.less'
 import { Button } from 'antd'
-import * as src from '../public/test.jpg'
+import * as src from '../../public/test.jpg'
 
 if(module.hot){
     /* 该dependency还需要研究
