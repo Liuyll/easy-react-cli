@@ -4,12 +4,10 @@ const TerserPlugin = require('terser-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const resolveApp = require('./path').resolveApp
 const tools = require('./tools')
-const getEntries = tools.getEntries
 
 module.exports = {
     entry: {
-        index: path.resolve(__dirname,'../../src/index.tsx'),
-        ...getEntries()
+        index: path.resolve(__dirname,'../../src/index.tsx')
     },
     output: {
         path: path.resolve(__dirname,'../../build'),
@@ -58,7 +56,7 @@ module.exports = {
                 use: [{
                     loader: 'url-loader'
                 }],
-                exclude: path.resolve(__dirname,'../../node_modules'),
+                // exclude: path.resolve(__dirname,'../../node_modules'),
             },
         ],
     },
@@ -91,10 +89,10 @@ module.exports = {
                     name: 'vendor',
                     priority: 10
                 },
-                react: {
-                    test: /node_modules\/(react|react-dom)/,
+                commons: {
+                    test: /node_modules\/(react|react-dom|antd)/,
                     chunks: 'all',
-                    name: 'react',
+                    name: 'commons',
                     priority: 20
                 },
                 default: {
