@@ -33,6 +33,7 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
+    "glob": "^7.1.6",
     "react": "^16.12.0",
     "react-dom": "^16.12.0"
   }

@@ -4,9 +4,13 @@ const TerserPlugin = require('terser-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const resolveApp = require('./path').resolveApp
 const tools = require('./tools')
+const getEntries = tools.getEntries
 
 module.exports = {
-    entry: path.resolve(__dirname,'../../src/index.tsx'),
+    entry: {
+        index: path.resolve(__dirname,'../../src/index.tsx'),
+        ...getEntries()
+    },
     output: {
         path: path.resolve(__dirname,'../../build'),
         filename: this.mode === 'production' ? '[name].[contenthash:8].file.js' : '[name].[hash:8].file.js',
@@ -53,21 +57,10 @@ module.exports = {
                 test: /\.(jpg|png)$/,
                 use: [{
                     loader: 'url-loader'
-                }]
+                }],
+                exclude: path.resolve(__dirname,'../../node_modules'),
             },
-            // {
-            //     test: /\.(png|jpg|gif)$/,
-            //     use: [
-            //         {
-            //             loader: "url-loader",
-            //             options: {
-            //                 limit: 8 * 1024 // 当图片小于8M后使用后base64进行打包
-            //             }
-            //         }
-            //     ]
-            // }
         ],
-        // exclude:path.resolve(__dirname,'../../node_modules')
     },
     plugins: [
         new HtmlWebpackPlugin({
