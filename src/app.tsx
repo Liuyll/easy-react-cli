@@ -19,7 +19,7 @@ const App:React.SFC<any> = function(){
     return (
         <div className="wrap">
             Welcome to Easy-React
-            <div>
+            <div className="content">
                 <img src={src} />
             </div>
         </div>

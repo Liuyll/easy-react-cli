@@ -1,4 +1,4 @@
-const wait_mocks = require('../../mock')
+const wait_mocks = require('../../../mock')
 
 module.exports = (app) => {
     for(let wait_mock in wait_mocks){

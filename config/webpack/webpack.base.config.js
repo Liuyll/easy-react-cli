@@ -2,8 +2,9 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-const resolveApp = require('./path').resolveApp
-const tools = require('./tools')
+const resolveApp = require('./tools/path').resolveApp
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const tools = require('./tools/tools')
 
 module.exports = {
     entry: {
@@ -34,11 +35,11 @@ module.exports = {
             },
             {
                 test: /\.css/,
-                use: ['css-loader']
+                use: [MiniCssExtractPlugin.loader,'css-loader']
             },
             {
                 test: /\.less/,
-                use: ['style-loader','css-loader','less-loader']
+                use: [MiniCssExtractPlugin.loader,'css-loader','less-loader']
             },
             {
                 test: /\.(js|jsx)$/,
@@ -56,7 +57,7 @@ module.exports = {
                 use: [{
                     loader: 'url-loader'
                 }],
-                // exclude: path.resolve(__dirname,'../../node_modules'),
+                exclude: path.resolve(__dirname,'../../node_modules'),
             },
         ],
     },
@@ -65,6 +66,10 @@ module.exports = {
             template: path.resolve(__dirname,'../../src/index.html'),
             inject: true,
             filename: 'index.html'
+        }),
+        new MiniCssExtractPlugin({
+            filename: '[name].css',
+            chunkFilename: '[id].css',
         }),
         new CleanWebpackPlugin({
             cleanOnceBeforeBuildPatterns: resolveApp('../../build')
