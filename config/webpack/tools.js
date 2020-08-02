@@ -16,8 +16,34 @@ function getEntries() {
     return entries
 }
 
-getEntries()
+function generateHTMLPluginTemplate(name,chunk) {
+    const templateSrc = path.join(path.resolve(__dirname,`../../pages/${name}/index.html`))
+    return {
+        template: templateSrc,
+        filename: `${name}.html`,
+        inject: true,
+        chunks: ['commons','vendors',chunk]
+    }
+}
+
+
+function generateHTMLPlugin(plugin) {
+    const entries = getEntries()
+
+    const plugins = Object.keys(entries).map(name => {
+        return new plugin(
+            generateHTMLPluginTemplate(
+                name,
+                name
+            )
+        )
+    })
+
+    return plugins
+}
 module.exports = {
     judgeMode,
-    getEntries
+    getEntries,
+    generateHTMLPluginTemplate,
+    generateHTMLPlugin
 }

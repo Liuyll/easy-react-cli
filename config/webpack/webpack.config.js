@@ -2,9 +2,11 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const AnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const resolveApp = require('./path').resolveApp
 const tools = require('./tools')
 const getEntries = tools.getEntries
+const generateHTMLPlugin = tools.generateHTMLPlugin
 
 module.exports = {
     entry: {
@@ -70,7 +72,9 @@ module.exports = {
         }),
         new CleanWebpackPlugin({
             cleanOnceBeforeBuildPatterns: resolveApp('../../build')
-        })
+        }),
+        new AnalyzerPlugin(),
+        ...generateHTMLPlugin(HtmlWebpackPlugin)
     ],
     optimization: {
         minimizer: [
@@ -84,27 +88,36 @@ module.exports = {
         // named way:runtime~${entryPoint}.js
         runtimeChunk: true,
         splitChunks: {
+            chunks: 'all',
+            // minSize: 30000,
+            minChunks: 2,
+            maxAsyncRequests: 5,
+            maxInitialRequests: 3,
+            name: true,
             cacheGroups: {
-                vendors: {
-                    test: /node_modules/,
-                    chunks: 'initial',
-                    name: 'vendor',
-                    priority: 10
-                },
-                react: {
-                    test: /node_modules\/(react|react-dom)/,
+                commons: {
+                    test: module => {
+                        return /[\\/]node_modules[\\/](react|react-dom|antd)/.test(module.context)
+                    },
                     chunks: 'all',
-                    name: 'react',
+                    name: 'commons',
                     priority: 20
                 },
-                default: {
-                    test: '*',
-                    name: 'default',
-                    minChunks: 2,
-                    priority: -20,
-                    maxInitialRequests: 3,
-                    reuseExistingChunk: true
-                }
+                vendors: {
+                    test: /node_modules/,
+                    chunks: 'all',
+                    name: 'vendors',
+                    priority: 10
+                },
+               
+                // default: {
+                //     test: '*',
+                //     name: 'default',
+                //     minChunks: 2,
+                //     priority: -20,
+                //     maxInitialRequests: 3,
+                //     reuseExistingChunk: true
+                // }
             }
         }
     },
