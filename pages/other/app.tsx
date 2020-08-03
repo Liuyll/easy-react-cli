@@ -17,7 +17,8 @@ if(module.hot){
 const App:React.SFC<any> = function(){
     return (
         <div className="wrap">
-            Welcome to Easy-React
+            <div>hello i am page2</div>
+            <a href="./index.html">to index</a>
         </div>
     )
 }

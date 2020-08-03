@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const AnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+// const AnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const resolveApp = require('./tools/path').resolveApp
 const tools = require('./tools/tools')
 const getEntries = tools.getEntries
@@ -38,11 +38,11 @@ module.exports = {
             },
             {
                 test: /\.css/,
-                use: [MiniCssExtractPlugin.loader,'css-loader']
+                use: [this.mode === 'production' ? MiniCssExtractPlugin.loader : 'style-loader','css-loader']
             },
             {
                 test: /\.less/,
-                use: [MiniCssExtractPlugin.loader,'css-loader','less-loader']
+                use: [this.mode === 'production' ? MiniCssExtractPlugin.loader : 'style-loader','css-loader','less-loader']
             },
             {
                 test: /\.(js|jsx)$/,
