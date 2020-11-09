@@ -117,6 +117,9 @@ module.exports = {
             }
         }
     },
+    externals: {
+        react: 'react'
+    },
     resolve: {
         alias: {
             '@Components': path.resolve(__dirname,'../../src/components')
