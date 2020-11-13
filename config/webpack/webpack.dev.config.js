@@ -2,7 +2,6 @@ const resolveApp = require('./tools/path').resolveApp
 const common = require('./webpack.base.config')
 const merge = require('webpack-merge')
 const mocktools = require('./tools/mocktool')
-const HotModuleReplacementPlugin = require('webpack').HotModuleReplacementPlugin
 
 module.exports = merge(common,{
     mode: 'development',
@@ -17,11 +16,10 @@ module.exports = merge(common,{
         contentBase: resolveApp('../../build'),
         port: 9000,
         compress: false,
+        // hmr start
         hot: true,
         inline: true,
         before: (app) => mocktools(app)
     },
-    plugins: [
-        new HotModuleReplacementPlugin()
-    ]
+    plugins: []
 })

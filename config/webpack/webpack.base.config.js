@@ -8,6 +8,7 @@ const resolveApp = require('./tools/path').resolveApp
 const tools = require('./tools/tools')
 const getEntries = tools.getEntries
 const generateHTMLPlugin = tools.generateHTMLPlugin
+const serverPath = '/'
 
 module.exports = {
     entry: {
@@ -17,7 +18,7 @@ module.exports = {
         path: path.resolve(__dirname,'../../build'),
         filename: this.mode === 'production' ? '[name].[contenthash:8].file.js' : '[name].[hash:8].file.js',
         chunkFilename: this.mode === 'production' ? '[name].[chunkhash:8].chunk.js' : '[name].[hash:8].chunk.js',
-        publicPath: tools.judgeMode(this.mode,resolveApp('../../build'),'/'),
+        publicPath: tools.judgeMode(this.mode,'/',serverPath),
     },
     module: {
         rules: [
@@ -118,7 +119,8 @@ module.exports = {
         }
     },
     externals: {
-        react: 'react'
+        'react': 'React',
+        'react-dom': 'ReactDom'
     },
     resolve: {
         alias: {

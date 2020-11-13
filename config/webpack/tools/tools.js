@@ -3,7 +3,7 @@ const path = require('path')
 
 const pagesPrefix = '../../../pages'
 function judgeMode(mode,dev,prod){
-    mode === 'production' ? prod : dev
+    return mode === 'production' ? prod : dev
 }
 
 function getEntries() {
