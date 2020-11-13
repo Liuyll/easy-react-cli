@@ -73,7 +73,9 @@ module.exports = {
             filename: '[name].css',
             chunkFilename: '[id].css',
         }),
-        // new AnalyzerPlugin(),
+        // new AnalyzerPlugin({
+        //     analyzerPort: 8889
+        // }),
         ...generateHTMLPlugin(HtmlWebpackPlugin)
     ],
     optimization: {
