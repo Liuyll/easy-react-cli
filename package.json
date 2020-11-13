@@ -1,7 +1,8 @@
 {
   "scripts": {
     "dev": "webpack-dev-server --config config/webpack/webpack.dev.config.js --open --colors",
-    "build": "webpack --config config/webpack/webpack.prod.config.js --progress --colors "
+    "build": "webpack --config config/webpack/webpack.prod.config.js --progress --colors",
+    "dev-ip": "webpack-dev-server --config config/webpack/webpack.dev.config.js --open --colors --host 0.0.0.0 --useLocalIp"
   },
   "devDependencies": {
     "@babel/core": "^7.7.5",
@@ -32,8 +33,6 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
-    "glob": "^7.1.6",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0"
+    "glob": "^7.1.6"
   }
 }

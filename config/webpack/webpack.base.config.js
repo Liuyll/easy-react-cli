@@ -5,6 +5,8 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const resolveApp = require('./tools/path').resolveApp
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const tools = require('./tools/tools')
+const { judgeMode } = require('./tools/tools')
+const serverPath = '/'
 
 module.exports = {
     entry: {
@@ -14,7 +16,7 @@ module.exports = {
         path: path.resolve(__dirname,'../../build'),
         filename: this.mode === 'production' ? '[name].[contenthash:8].file.js' : '[name].[hash:8].file.js',
         chunkFilename: this.mode === 'production' ? '[name].[chunkhash:8].chunk.js' : '[name].[hash:8].chunk.js',
-        publicPath: tools.judgeMode(this.mode,resolveApp('../../build'),'/'),
+        publicPath: tools.judgeMode(this.mode,'/',serverPath),
     },
     module: {
         rules: [
@@ -65,7 +67,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname,'../../src/index.html'),
             inject: true,
-            filename: 'index.html'
+            filename: judgeMode(this.mode, 'index.html', 'index-produce.html')
         }),
         new MiniCssExtractPlugin({
             filename: '[name].css',
@@ -110,6 +112,10 @@ module.exports = {
                 }
             }
         }
+    },
+    externals: {
+        "react": 'React',
+        "react-dom": 'ReactDOM',
     },
     resolve: {
         alias: {
