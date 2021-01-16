@@ -2,7 +2,11 @@
 
 import * as React from 'react'
 import './app.less'
-import src from '../public/test.jpg'
+import Home from '@Components/Home'
+import Shop from '@Components/Shop'
+import { Route, Link } from 'react-router-dom'
+import { state } from './store/store'
+import { Provider } from './store/context' 
 
 if(module.hot){
     /* 该dependency还需要研究
@@ -17,12 +21,11 @@ if(module.hot){
 
 const App:React.SFC<any> = function(){
     return (
-        <div className="wrap">
-            Welcome to Easy-React
-            <div className="content">
-                <img src={src} />
-            </div>
-        </div>
+        <Provider store={{ store: state }}>
+            <Link to="/shop">shop</Link>
+            <Route path="/" component={Home} exact={true}></Route>
+            <Route path="/shop" component={Shop} exact={true}></Route>
+        </Provider>
     )
 }
 

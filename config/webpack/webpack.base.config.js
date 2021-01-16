@@ -2,7 +2,7 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-const resolveApp = require('./tools/path').resolveApp
+const resolvePath = require('./tools/path').resolvePath
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const tools = require('./tools/tools')
 const { judgeMode } = require('./tools/tools')
@@ -13,9 +13,9 @@ module.exports = {
         index: path.resolve(__dirname,'../../src/index.tsx')
     },
     output: {
-        path: path.resolve(__dirname,'../../build'),
-        filename: this.mode === 'production' ? '[name].[contenthash:8].file.js' : '[name].[hash:8].file.js',
-        chunkFilename: this.mode === 'production' ? '[name].[chunkhash:8].chunk.js' : '[name].[hash:8].chunk.js',
+        path: path.resolve(__dirname,'../../build/client'),
+        filename: this.mode === 'production' ? '[name].[contenthash:8].file.js' : '[name].file.js',
+        chunkFilename: this.mode === 'production' ? '[name].[chunkhash:8].chunk.js' : '[name].chunk.js',
         publicPath: tools.judgeMode(this.mode,'/',serverPath),
     },
     module: {
@@ -57,7 +57,7 @@ module.exports = {
             {
                 test: /\.(jpg|png)$/,
                 use: [{
-                    loader: 'url-loader'
+                    loader: 'url-loader',
                 }],
                 exclude: path.resolve(__dirname,'../../node_modules'),
             },
@@ -67,14 +67,15 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname,'../../src/index.html'),
             inject: true,
-            filename: judgeMode(this.mode, 'index.html', 'index-produce.html')
+            filename: judgeMode(this.mode, 'index.html', 'index-produce.html'),
+            title: 'easy-react-cli',
         }),
         new MiniCssExtractPlugin({
             filename: '[name].css',
             chunkFilename: '[id].css',
         }),
         new CleanWebpackPlugin({
-            cleanOnceBeforeBuildPatterns: resolveApp('../../build')
+            cleanOnceBeforeBuildPatterns: resolvePath('../../build')
         })
     ],
     optimization: {
@@ -113,10 +114,11 @@ module.exports = {
             }
         }
     },
-    externals: {
-        "react": 'React',
-        "react-dom": 'ReactDOM',
-    },
+    // cdn的react访问不了，自行开启
+    // externals: {
+    //     "react": 'React',
+    //     "react-dom": 'ReactDOM',
+    // },
     resolve: {
         alias: {
             '@Components': path.resolve(__dirname,'../../src/components')

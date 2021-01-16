@@ -3,10 +3,13 @@
         "module": "commonjs",
         "lib": ["es2017","es6","dom"],
         "experimentalDecorators": true,
-            "target": "ES6",
-            "jsx":"react",
-            "allowSyntheticDefaultImports": true,
-        
+        "target": "ES6",
+        "jsx":"react",
+        "allowSyntheticDefaultImports": true,
+        "baseUrl": ".",
+        "paths": {
+            "@Components/*": ["./src/components/*"]
+        }
     },
     "include": [
         "**/*"
