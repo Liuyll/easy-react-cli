@@ -4,7 +4,6 @@ const TerserPlugin = require('terser-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 // const AnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-const resolveApp = require('./tools/path').resolveApp
 const tools = require('./tools/tools')
 const getEntries = tools.getEntries
 const generateHTMLPlugin = tools.generateHTMLPlugin
@@ -28,13 +27,12 @@ module.exports = {
                     {
                         loader: 'babel-loader',
                         options: {
-                            presets: ['@babel/preset-env','@babel/preset-react'],
+                            presets: ['@babel/preset-typescript', '@babel/preset-env','@babel/preset-react'],
                             // 可开启装饰器,也可由ts开启
-                            plugins: []
+                            plugins: ['@babel/plugin-transform-runtime'],
+                            exclude: /node_modules/
                         },
-                        
                     },
-                    'ts-loader'
                 ]
             },
             {
@@ -52,7 +50,8 @@ module.exports = {
                     options: {
                         presets: ['@babel/preset-env','@babel/preset-react'],
                         // 可开启装饰器,也可由ts开启
-                        plugins: []
+                        plugins: ['@babel/plugin-transform-runtime'],
+                        exclude: /node_modules/
                     }, 
                 }]
             },
@@ -67,7 +66,7 @@ module.exports = {
     },
     plugins: [
         new CleanWebpackPlugin({
-            cleanOnceBeforeBuildPatterns: resolveApp('../../build')
+            cleanOnceBeforeBuildPatterns: path.resolve(__dirname, '../../build')
         }),
         new MiniCssExtractPlugin({
             filename: '[name].css',
@@ -120,10 +119,11 @@ module.exports = {
             }
         }
     },
-    externals: {
-        'react': 'React',
-        'react-dom': 'ReactDom'
-    },
+    // react cdn有问题，如果找到靠谱的自行开启
+    // externals: {
+    //     'react': 'React',
+    //     'react-dom': 'ReactDom'
+    // },
     resolve: {
         alias: {
             '@Components': path.resolve(__dirname,'../../src/components')
