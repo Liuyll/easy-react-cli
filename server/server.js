@@ -35,16 +35,16 @@ router.get('/(.*)', async (ctx, next) => {
             <head>
                 <meta charset="UTF-8">
             </head>
-            <link href="/client/index.css" rel="stylesheet">
+            <link href="http://localhost:9000/index.css" rel="stylesheet">
             <body>
                 <div id="app">${domStr}</div>
             </body>
             <script>
                 window.__INITIAL_STATE = ${JSON.stringify(state)}
             </script>
-            <script src='/client/runtime~index.file.js'></script>
-            <script src='/client/vendor.chunk.js'></script>
-            <script src='/client/index.chunk.js'></script>
+            <script src='http://localhost:9000/runtime~index.file.js'></script>
+            <script src='http://localhost:9000/vendor.chunk.js'></script>
+            <script src='http://localhost:9000/index.chunk.js'></script>
         </html>
     `
     ctx.body = html
@@ -52,8 +52,13 @@ router.get('/(.*)', async (ctx, next) => {
 })
 
 const app = new Koa()
+// static
 app.use(Static(
-    path.resolve(__dirname, '../build')
+    path.resolve(__dirname, '../public')
+))
+// server hmr
+app.use(Static(
+    path.resolve(__dirname, '../build/client')
 ))
 
 app.use(router.routes())

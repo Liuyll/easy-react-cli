@@ -3,9 +3,9 @@
     "dev": "webpack-dev-server --config config/webpack/webpack.dev.config.js --open --colors",
     "build": "webpack --config config/webpack/webpack.prod.config.js --progress --colors",
     "dev-ip": "webpack-dev-server --config config/webpack/webpack.dev.config.js --open --colors --host 0.0.0.0 --useLocalIp",
-    "build:server": "webpack --config config/webpack/webpack.server.config.js --progress --colors",
-    "build:client": "webpack --config config/webpack/webpack.base.config.js --progress --colors --mode=development",
-    "dev:ssr": "npm run build:server && npm run build:client && node build/server/server.bundle.js "
+    "build:server:dev": "webpack --watch --config config/webpack/webpack.server.config.js --progress --colors --mode=development",
+    "build:client:dev": "webpack --config config/webpack/webpack.base.config.js --progress --colors --mode=development",
+    "dev:ssr": "node ssr_run.js"
   },
   "devDependencies": {
     "@babel/core": "^7.7.5",
@@ -14,6 +14,7 @@
     "@babel/plugin-transform-runtime": "^7.12.10",
     "@babel/preset-env": "^7.7.6",
     "@babel/preset-react": "^7.7.4",
+    "@babel/preset-typescript": "^7.12.7",
     "@babel/register": "^7.12.10",
     "@babel/runtime": "^7.12.5",
     "@types/react": "^16.9.16",

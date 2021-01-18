@@ -1,16 +1,12 @@
 import * as React from 'react'
-import { useEffect } from 'react'
-import src from '../../public/test.jpg'
+import { isCSR } from '../utils'
 
 const Home = () => {
-    useEffect(() => {
-        console.log(123)
-    }, [])
     return (
         <div className="wrap">
-            Welcome to Easy-React
+            Welcome to Easy-React{isCSR() ? '' : '-SSR'}
             <div className="content">
-                <img src={src} />
+                <img src='./test.jpg' />
             </div>
         </div>
     )

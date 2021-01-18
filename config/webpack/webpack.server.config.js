@@ -1,19 +1,22 @@
 const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-const resolvePath = require('./tools/path').resolvePath
+const webpack = require('webpack')
 
 module.exports = {
-    mode: 'development',
     target: 'node',
     entry: {
-        index: path.resolve(__dirname, '../../server/server')
+        index: path.resolve(__dirname, '../../server/server'),
     },
     output: {
         path: path.resolve(__dirname,'../../build/server'),
         filename: 'server.bundle.js',
-        publicPath: '/'
+        publicPath: 'localhost:9000'
         // libraryTarget: 'commonjs2'
+    },
+    watchOptions: {
+        aggregateTimeout: 200,
+        poll: 1000
     },
     node: {
         __dirname: true
@@ -67,8 +70,9 @@ module.exports = {
             chunkFilename: '[id].css',
         }),
         new CleanWebpackPlugin({
-            cleanOnceBeforeBuildPatterns: resolvePath('../../build')
-        })
+            cleanOnceBeforeBuildPatterns: path.resolve(__dirname, '../../build/server')
+        }),
+        // new webpack.HotModuleReplacementPlugin()
     ],
     resolve: {
         alias: {

@@ -14,12 +14,13 @@ module.exports = merge(common,{
                 to: '/'
             }]
         },
-        contentBase: resolvePath('../../public'),
+        writeToDisk: true,
+        contentBase: [path.resolve(__dirname, '../../public'), path.resolve(__dirname, '../../build/client')],
         port: 9000,
         compress: false,
         // hmr start
         hot: true,
-        inline: true,
+        // inline: true,
         before: (app) => mocktools(app)
     },
     plugins: []

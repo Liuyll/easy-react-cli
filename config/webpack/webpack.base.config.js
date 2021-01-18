@@ -26,13 +26,12 @@ module.exports = {
                     {
                         loader: 'babel-loader',
                         options: {
-                            presets: ['@babel/preset-env','@babel/preset-react'],
+                            presets: ['@babel/preset-typescript', '@babel/preset-env','@babel/preset-react'],
                             // 可开启装饰器,也可由ts开启
-                            plugins: []
-                        },
-                        
-                    },
-                    'ts-loader'
+                            plugins: ['@babel/plugin-transform-runtime'],
+                            exclude: path.resolve(__dirname,'../../node_modules'),
+                        }
+                    }
                 ]
             },
             {
@@ -50,8 +49,9 @@ module.exports = {
                     options: {
                         presets: ['@babel/preset-env','@babel/preset-react'],
                         // 可开启装饰器,也可由ts开启
-                        plugins: []
-                    }, 
+                        plugins: ['@babel/plugin-transform-runtime'],
+                        exclude: path.resolve(__dirname,'../../node_modules'),
+                    }
                 }]
             },
             {
@@ -75,7 +75,7 @@ module.exports = {
             chunkFilename: '[id].css',
         }),
         new CleanWebpackPlugin({
-            cleanOnceBeforeBuildPatterns: resolvePath('../../build')
+            cleanOnceBeforeBuildPatterns: path.resolve(__dirname, '../../build/client')
         })
     ],
     optimization: {
