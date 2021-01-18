@@ -112,10 +112,11 @@ module.exports = {
             }
         }
     },
-    externals: {
-        "react": 'React',
-        "react-dom": 'ReactDOM',
-    },
+    // react cdn有问题，如果找到靠谱的自行开启
+    // externals: {
+    //     "react": 'React',
+    //     "react-dom": 'ReactDOM',
+    // },
     resolve: {
         alias: {
             '@Components': path.resolve(__dirname,'../../src/components')
