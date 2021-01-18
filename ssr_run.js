@@ -1,3 +1,5 @@
+/*eslint no-console: 0*/
+
 const { spawn } = require('child_process')
 const process = require('process')
 
@@ -9,6 +11,7 @@ let clientResolve,
 
 clientDev.stdout.on('data', (data) => {
     data = data.toString()
+    console.log(data)
     // flag: Compiled with
     if(data.includes('Compiled successfully.') || data.includes('Compiled with warnings.')) {
         clientResolve()
@@ -17,6 +20,7 @@ clientDev.stdout.on('data', (data) => {
 
 buildServer.stdout.on('data', (data) => {
     data = data.toString()
+    console.log(data)
     // flag: poll
     if(data.includes('server/server.js')) {
         serverResolve()
@@ -33,6 +37,12 @@ Promise.all([
     new Promise(_resolve => serverResolve = _resolve)
 ]).then(() => {
     console.log('start ssr server')
-    spawn('node', ['build/server/server.bundle.js'], { shell: true })
+    const server = spawn('node', ['build/server/server.bundle.js'], { shell: true })
+    server.stdout.on('data', (data) => {
+        console.log(data.toString())
+    })
+    server.stderr.on('data', (data) => {
+        console.log(data.toString())
+    })
 })
 

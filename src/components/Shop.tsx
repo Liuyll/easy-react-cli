@@ -4,21 +4,23 @@ import axios from 'axios'
 import { Context } from '../store/context'
 
 function Shop(){
-    const { store } = useContext(Context)
+    const { store, dispatch } = useContext(Context)
     return (
         <div className="wrap">
+            <p>shops:</p>
             {
                 store.goods.map((good,index) => (
                     <div key={index}>{good.name}</div>
                 ))
             }
+            <button onClick={() => dispatch('asyncGetGoods')}>add one</button>
         </div>
     )
 }
 
-Shop.getInitialData = async (dispatch) => {
+Shop.getInitialData = async (state, dispatch) => {
     const res = await axios('http://localhost:8080/api/goods')
-    dispatch('setGoods', res.data)
+    dispatch(state, 'setGoods', res.data)
 }
 
 export default Shop

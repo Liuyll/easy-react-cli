@@ -1,6 +1,7 @@
 import React, { createContext, useReducer, useCallback } from 'react'
-import { state as store, reducer, getAction } from './store' 
+import { getState, reducer, getAction } from './state' 
 
+const store = getState()
 const Context = createContext({ value: 'default' })
 const Provider = (props) => {
     const { children } = props
@@ -11,7 +12,7 @@ const Provider = (props) => {
             key,
             payload
         })
-    }, [state])
+    }, [_commit])
 
     const dispatch = useCallback(async (key, payload) => {
         const target = getAction(key)
@@ -21,7 +22,7 @@ const Provider = (props) => {
         })
     })
     return (
-        <Context.Provider value={{ store, dispatch, commit }}>
+        <Context.Provider value={{ store: state, dispatch, commit }}>
             {children}
         </Context.Provider>
     )

@@ -4,7 +4,7 @@ const Router = require('koa-router')
 const Static = require('koa-static')
 import ReactDomServer from 'react-dom/server'
 import { render } from './render'
-import { dispatch, state } from '../src/store/store'
+import { serverDispatch, cloneState } from '../src/store/state'
 const { getComponent } = require('../src/router')
 import fs from 'fs'
 
@@ -18,18 +18,19 @@ router.get('/api/goods', (ctx) => {
 })
 
 router.get('/(.*)', async (ctx, next) => {
+    let serverState = cloneState()
     const renderComponent = getComponent(ctx.url)
-    if(renderComponent) {
-        if(renderComponent.getInitialData) {
-            await renderComponent.getInitialData(dispatch)
-        }
-    }
+    if(renderComponent && renderComponent.getInitialData) {
+        await renderComponent.getInitialData(serverState, serverDispatch)
+    } else serverState = null
     const domStr = ReactDomServer.renderToString(render(ctx))
     let html 
     if(ctx.query && ctx.query.csr) {
         html = fs.readFileSync(path.resolve(__dirname, '../build/client/index.html')).toString()
     }
-    else html = `
+    else {
+        const injectState = serverState ? `<script>window.__INITIAL_STATE = ${JSON.stringify(serverState)}</script>` : ''
+        html = `
         <!DOCTYPE html>
             <html lang="en">
             <head>
@@ -39,14 +40,13 @@ router.get('/(.*)', async (ctx, next) => {
             <body>
                 <div id="app">${domStr}</div>
             </body>
-            <script>
-                window.__INITIAL_STATE = ${JSON.stringify(state)}
-            </script>
+            ${injectState}
             <script src='http://localhost:9000/runtime~index.file.js'></script>
             <script src='http://localhost:9000/vendor.chunk.js'></script>
             <script src='http://localhost:9000/index.chunk.js'></script>
         </html>
     `
+    }
     ctx.body = html
     next()
 })

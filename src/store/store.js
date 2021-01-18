@@ -4,40 +4,30 @@ const store = {
     },
     mutations: {
         setGoods(state, goods) {
-            state.goods = goods
+            // state.goods = goods
+            return {
+                goods
+            }
+        },
+        addGoods(state, goods) {
+            state.goods.push(...goods)
+            return {
+                goods: state.goods
+            }
         }
     },
     actions: {
-
+        async asyncGetGoods({ commit }) {
+            await new Promise((r) => setTimeout(r, 2000))
+            commit('addGoods', [
+                {
+                    name: 'new shop'
+                },
+            ])
+        }
     }
 }
-
-if(typeof window !== 'undefined' && window.__INITIAL_STATE) {
-    store.state = window.__INITIAL_STATE
-}
-
-const state = store.state
-const dispatch = (key, payload) => {
-    store.mutations[key](state, payload)
-}
-const generateReducer = () => {
-    const handler = {}
-    const keys = Object.getOwnPropertyNames(store.mutations)
-    for(let key of keys) {
-        handler[key] = store.mutations[key]
-    }
-    return (state, action) => {
-        const { key, payload } = action 
-        store.mutations[key](state, payload)
-    }
-}
-
-const getAction = (key) => store.action[key]
-const reducer = generateReducer()
 
 export {
-    state,
-    dispatch,
-    reducer,
-    getAction
+    store
 }
