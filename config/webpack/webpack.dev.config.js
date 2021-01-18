@@ -1,7 +1,7 @@
-const resolveApp = require('./tools/path').resolveApp
 const common = require('./webpack.base.config')
 const merge = require('webpack-merge')
 const mocktools = require('./tools/mocktool')
+const path = require('path')
 
 module.exports = merge(common,{
     mode: 'development',
@@ -13,7 +13,7 @@ module.exports = merge(common,{
                 to: '/'
             }]
         },
-        contentBase: resolveApp('../../build'),
+        contentBase: path.resolve(__dirname, '../../public'),
         port: 9000,
         compress: false,
         // hmr start
