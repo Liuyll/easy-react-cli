@@ -1,6 +1,21 @@
 {
     "plugins": [
+        "@babel/plugin-transform-runtime",
         "@babel/plugin-proposal-optional-chaining",
         "@babel/plugin-proposal-nullish-coalescing-operator"
+    ],
+    "presets": [
+        "@babel/preset-react",
+        [
+            "@babel/preset-env",
+            {
+                "useBuiltIns": "usage",
+                "corejs": {
+                    "version": 3, // 使用core-js@3
+                    "proposals": true
+                }
+            }
+        ],
+        "@babel/preset-typescript"
     ]
 }
