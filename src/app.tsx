@@ -4,8 +4,11 @@ import * as React from 'react'
 import './app.less'
 import Home from '@Components/Home'
 import Shop from '@Components/Shop'
-import { Route, Link } from 'react-router-dom'
+import PageNotFound from '@Components/404'
+import { Route, Link, Redirect, Switch } from 'react-router-dom'
 import { Provider } from './store/context' 
+import { routes } from './router'
+// import routerConfig from './router'
 
 if(module.hot){
     /* 该dependency还需要研究
@@ -18,12 +21,21 @@ if(module.hot){
     module.hot.accept('./')
 }
 
-const App:React.SFC<any> = function(){
+const App:React.SFC<any> = function(props){
+    const { state } = props
     return (
-        <Provider>
+        <Provider store={state}>
             <Link to="/shop">shop</Link>
-            <Route path="/" component={Home} exact={true}></Route>
-            <Route path="/shop" component={Shop} exact={true}></Route>
+            <Switch>
+                {routes.map(router => {
+                    const { path, component, exact, redirect } = router
+                    return (
+                        <Route path={path} component={component} exact={exact} key={router.path}>
+                            {redirect ? <Redirect to={redirect}/> : null}
+                        </Route>
+                    )
+                })}
+            </Switch>
         </Provider>
     )
 }

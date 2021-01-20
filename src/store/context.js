@@ -1,10 +1,10 @@
 import React, { createContext, useReducer, useCallback } from 'react'
-import { getState, reducer, getAction } from './state' 
+import { reducer, getAction, getInitState } from './state' 
 
-const store = getState()
 const Context = createContext({ value: 'default' })
 const Provider = (props) => {
-    const { children } = props
+    let { children, store } = props
+    if(!store) store = getInitState()
     const [state, _commit] = useReducer(reducer, store)
 
     const commit = useCallback((key, payload) => {

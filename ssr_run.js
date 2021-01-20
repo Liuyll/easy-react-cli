@@ -11,7 +11,7 @@ let clientResolve,
 
 clientDev.stdout.on('data', (data) => {
     data = data.toString()
-    console.log(data)
+    // console.log(data)
     // flag: Compiled with
     if(data.includes('Compiled successfully.') || data.includes('Compiled with warnings.')) {
         clientResolve()
@@ -25,6 +25,16 @@ buildServer.stdout.on('data', (data) => {
     if(data.includes('server/server.js')) {
         serverResolve()
     }
+})
+
+
+clientDev.stderr.on('data', (err) => {
+    console.log(err.toString())
+})
+
+buildServer.stderr.on('data', (err) => {
+    // console.log('---------')
+    console.log(err.toString())
 })
 
 process.on('SIGINT', () => {
@@ -41,8 +51,8 @@ Promise.all([
     server.stdout.on('data', (data) => {
         console.log(data.toString())
     })
-    server.stderr.on('data', (data) => {
-        console.log(data.toString())
+    server.stderr.on('data', (err) => {
+        console.log(err.toString())
     })
 })
 

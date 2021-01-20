@@ -2,7 +2,6 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-const resolvePath = require('./tools/path').resolvePath
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const tools = require('./tools/tools')
 const { judgeMode } = require('./tools/tools')
@@ -123,6 +122,6 @@ module.exports = {
         alias: {
             '@Components': path.resolve(__dirname,'../../src/components')
         },
-        extensions: ['.ts', '.tsx', '.js', 'jsx']
+        extensions: ['.ts', '.tsx', '.js', '.jsx']
     }
 }

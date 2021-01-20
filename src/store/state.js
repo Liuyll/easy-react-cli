@@ -1,13 +1,15 @@
 import { store } from './store'
 
-if(typeof window !== 'undefined' && window.__INITIAL_STATE) {
-    store.state = window.__INITIAL_STATE
+if(typeof window !== 'undefined' && window.__INITIAL_STATE__) {
+    store.state = window.__INITIAL_STATE__
 }
 
-const getState = () => store.state
-const cloneState = () => JSON.parse(JSON.stringify(getState()))
+const state = store.state
+const cloneState = () => JSON.parse(JSON.stringify(state))
+const getInitState = () => cloneState()
+
 const serverDispatch = (state, key, payload) => {
-    const data = store.mutations[key](getState(), payload)
+    const data = store.mutations[key](state, payload)
     Object.assign(state, data)
 }
 
@@ -23,14 +25,13 @@ const generateReducer = () => {
     }
 }
 
-
 const getAction = (key) => store.actions[key]
 const reducer = generateReducer()
 
 export {
-    getState,
     cloneState,
+    getInitState,
     reducer,
     getAction,
-    serverDispatch
+    serverDispatch,
 }

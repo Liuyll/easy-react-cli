@@ -1,4 +1,3 @@
-const resolvePath = require('./tools/path').resolvePath
 const common = require('./webpack.base.config')
 const merge = require('webpack-merge')
 const mocktools = require('./tools/mocktool')
@@ -21,7 +20,8 @@ module.exports = merge(common,{
         // hmr start
         hot: true,
         // inline: true,
-        before: (app) => mocktools(app)
+        before: (app) => mocktools(app),
+        open: false
     },
     plugins: []
 })

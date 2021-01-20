@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "dev": "webpack-dev-server --config config/webpack/webpack.dev.config.js --open --colors",
+    "dev": "webpack-dev-server --config config/webpack/webpack.dev.config.js --colors",
     "build": "webpack --config config/webpack/webpack.prod.config.js --progress --colors",
     "dev-ip": "webpack-dev-server --config config/webpack/webpack.dev.config.js --open --colors --host 0.0.0.0 --useLocalIp",
     "build:server:dev": "webpack --watch --config config/webpack/webpack.server.config.js --progress --colors --mode=development",
@@ -30,6 +30,7 @@
     "html-webpack-plugin": "^3.2.0",
     "ignore-loader": "^0.1.2",
     "less-loader": "^6.2.0",
+    "merge-stream": "^2.0.0",
     "mini-css-extract-plugin": "^0.9.0",
     "terser-webpack-plugin": "^2.3.1",
     "ts-loader": "^6.2.1",

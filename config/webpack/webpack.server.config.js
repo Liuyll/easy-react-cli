@@ -16,7 +16,9 @@ module.exports = {
     },
     watchOptions: {
         aggregateTimeout: 200,
-        poll: 1000
+        poll: 1000,
+        // src由dev-server监控
+        ignored: /src/
     },
     node: {
         __dirname: true
@@ -71,13 +73,13 @@ module.exports = {
         }),
         new CleanWebpackPlugin({
             cleanOnceBeforeBuildPatterns: path.resolve(__dirname, '../../build/server')
-        }),
+        })
         // new webpack.HotModuleReplacementPlugin()
     ],
     resolve: {
         alias: {
             '@Components': path.resolve(__dirname,'../../src/components')
         },
-        extensions: ['.ts', '.tsx', '.js', 'jsx']
+        extensions: ['.ts', '.tsx', '.js', '.jsx']
     }
 }
