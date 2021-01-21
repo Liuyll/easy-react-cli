@@ -18,7 +18,7 @@ module.exports = {
         aggregateTimeout: 200,
         poll: 1000,
         // src由dev-server监控
-        ignored: /src/
+        ignored: [/src/]
     },
     node: {
         __dirname: true

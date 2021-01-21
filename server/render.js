@@ -2,11 +2,12 @@ import React from 'react'
 import ReactDomServer from 'react-dom/server'
 import { App } from '../src/app.tsx'
 import { StaticRouter } from 'react-router'
-import configs from '../config'
+import configs from '../ssrConfig/config'
 import { getComponent } from '../src/router'
 import { serverDispatch, cloneState } from '../src/store/state'
 import { generateHtmlFromElement, generateHtmlStreamFromElement } from './utils'
 import fs from 'fs'
+import path from 'path'
 
 function render({ ctx, state, context }) {
     return (
@@ -20,14 +21,13 @@ async function handle(ctx, next){
     let {
         injectScripts,
         injectCss,
-        layout,
         devPort,
-        mode
+        mode,
+        useLayout,
+        useStreamResponse
     } = configs
 
-    let prefix 
-    prefix = mode === 'dev' ? `http://localhost:${devPort}/` : '/'
-    const isStream = false
+    let prefix = mode === 'dev' ? `http://localhost:${devPort}/` : '/'
     injectScripts = injectScripts.map(script => prefix + script)
     injectCss = injectCss.map(css => prefix + css)
 
@@ -50,18 +50,23 @@ async function handle(ctx, next){
     let html 
 
     if(ctx.query && ctx.query.csr) {
-        html = fs.readFileSync(path.resolve(__dirname, '../build/client/index.html')).toString()
+        ctx.set('Connection', 'Close')
+        const indexPath = mode === 'dev' ? '../build/client/index.html' : '../build/client/index-produce.html'
+        ctx.set('Content-Type', 'text/html; charset=utf-8')
+        html = fs.createReadStream(path.resolve(__dirname, indexPath))
     }
     else {
-        if(layout) {
+        if(useLayout) {
+            const layout = require('../ssrConfig/layout').default
             const inlineScript = `window.__INITIAL_STATE__ = ${JSON.stringify(serverState)}`
             const props = { app, css: injectCss, scripts: injectScripts, inlineScript }
             const el = renderComponent.customLayout ? renderComponent.customLayout(props) : layout(props)
-            if(isStream) {
+            if(useStreamResponse) {
                 const stream = generateHtmlStreamFromElement(el)
                 ctx.body = stream
-                ctx.set('Content-Type', 'text/html')
+                ctx.set('Content-Type', 'text/html; charset=utf-8')
                 next()
+                return 
             } else {
                 html = generateHtmlFromElement(el)
             }
@@ -75,22 +80,20 @@ async function handle(ctx, next){
                     <head>
                         <meta charset="UTF-8">
                     </head>
-                    <link href="http://localhost:9000/index.css" rel="stylesheet">
+                    <link href="${prefix}index.css" rel="stylesheet">
                     <body>
                         <div id="app">${domStr}</div>
                     </body>
                     ${injectStateScript}
-                    <script src='http://localhost:9000/runtime~index.file.js'></script>
-                    <script src='http://localhost:9000/vendor.chunk.js'></script>
-                    <script src='http://localhost:9000/index.chunk.js'></script>
+                    <script src='${prefix}runtime~index.file.js'></script>
+                    <script src='${prefix}vendor.chunk.js'></script>
+                    <script src='${prefix}index.chunk.js'></script>
                 </html>
             `
         }
     }
-    if(!isStream) {
-        ctx.body = html
-        next()
-    }
+    ctx.body = html
+    next()
 }
 
 export {

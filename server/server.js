@@ -29,6 +29,14 @@ app.use(Static(
     }
 ))
 
+app.on('error', (err,ctx) => {
+    if(err.code === 'ECONNRESET') {
+        if(ctx.url === 'vendor.chunk.js') {
+            // pass
+        }
+    }
+})
+
 app.use(router.routes())
 app.listen(8080)
 

@@ -2,6 +2,7 @@ const common = require('./webpack.base.config')
 const merge = require('webpack-merge')
 const mocktools = require('./tools/mocktool')
 const path = require('path')
+const { devPort } = require('../../ssrConfig/config')
 
 module.exports = merge(common,{
     mode: 'development',
@@ -15,7 +16,7 @@ module.exports = merge(common,{
         },
         writeToDisk: true,
         contentBase: [path.resolve(__dirname, '../../public'), path.resolve(__dirname, '../../build/client')],
-        port: 9000,
+        port: devPort,
         compress: false,
         // hmr start
         hot: true,
