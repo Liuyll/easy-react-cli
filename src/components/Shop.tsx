@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useContext } from 'react'
-import axios from 'axios'
 import { Context } from '../store/context'
+import { useFetch } from 'rexos'
 
 function Shop(){
     const { store, dispatch } = useContext(Context)
@@ -19,7 +19,8 @@ function Shop(){
 }
 
 Shop.getInitialData = async (state, dispatch) => {
-    const res = await axios('http://localhost:8080/api/goods')
+    const res = await useFetch({ url: 'http://localhost:8080/api/goods' })
+    console.log(res.data)
     dispatch(state, 'setGoods', res.data)
 }
 

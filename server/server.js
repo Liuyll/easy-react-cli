@@ -6,6 +6,7 @@ const { handle } = require('../build/server/server.bundle')
 
 const router = new Router()
 router.get('/api/goods', (ctx) => {
+    ctx.set('content-type', 'application/json')
     ctx.body = JSON.stringify([
         { name: 'qwe' },
         { name: 'zxc' },
@@ -30,11 +31,10 @@ app.use(Static(
 ))
 
 app.on('error', (err,ctx) => {
-    if(err.code === 'ECONNRESET') {
-        if(ctx.url === 'vendor.chunk.js') {
-            // pass
-        }
+    if(err.code === 'ECONNRESET' && ctx.url === 'vendor.chunk.js') {
+        // pass
     }
+    else console.error(err)
 })
 
 app.use(router.routes())

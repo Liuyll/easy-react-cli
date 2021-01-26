@@ -80,6 +80,7 @@ module.exports = {
         alias: {
             '@Components': path.resolve(__dirname,'../../src/components')
         },
-        extensions: ['.ts', '.tsx', '.js', '.jsx']
+        extensions: ['.ts', '.tsx', '.js', '.jsx'],
+        mainFields: ['browser', 'module', 'main']
     }
 }
