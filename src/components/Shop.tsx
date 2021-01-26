@@ -20,7 +20,6 @@ function Shop(){
 
 Shop.getInitialData = async (state, dispatch) => {
     const res = await useFetch({ url: 'http://localhost:8080/api/goods' })
-    console.log(res.data)
     dispatch(state, 'setGoods', res.data)
 }
 
