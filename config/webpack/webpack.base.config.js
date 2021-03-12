@@ -5,7 +5,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const tools = require('./tools/tools')
 const { judgeMode } = require('./tools/tools')
-const serverPath = '/'
+const serverPath = './'
 
 module.exports = {
     entry: {

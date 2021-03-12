@@ -17,8 +17,8 @@ const store = {
         }
     },
     actions: {
-        async asyncGetGoods({ commit }) {
-            await new Promise((r) => setTimeout(r, 2000))
+        async asyncGetGoods({ commit, payload }) {
+            await new Promise((r) => setTimeout(r, payload.delay))
             commit('addGoods', [
                 {
                     name: 'new shop'

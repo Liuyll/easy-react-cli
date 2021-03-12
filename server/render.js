@@ -40,7 +40,7 @@ async function handle(ctx, next){
     // if(renderComponent.redirect) {
     //     return ctx.redirect(renderComponent.redirect)
     // }
-
+    
     renderComponent = renderComponent.component
     if(renderComponent && renderComponent.getInitialData) {
         await renderComponent.getInitialData(serverState, serverDispatch)

@@ -5,6 +5,7 @@ import { useFetch } from 'rexos'
 
 function Shop(){
     const { store, dispatch } = useContext(Context)
+    const timeout = 100
     return (
         <div className="wrap">
             <p>shops:</p>
@@ -13,7 +14,7 @@ function Shop(){
                     <div key={index}>{good.name}</div>
                 ))
             }
-            <button onClick={() => dispatch('asyncGetGoods')}>add one</button>
+            <button onClick={() => dispatch('asyncGetGoods', { delay: timeout })}>add one(delay:{timeout}'s)</button>
         </div>
     )
 }

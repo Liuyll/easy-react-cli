@@ -8,6 +8,7 @@ plugins: ['@typescript-eslint']
 env: 
     es6: true
     browser: true
+    node: true
 rules:
     indent:
         - error
@@ -39,4 +40,6 @@ rules:
         - off
     space-infix-ops:
         - warn
+    no-undef:
+        - error
     

@@ -14,6 +14,9 @@ router.get('/api/goods', (ctx) => {
     ])
 })
 
+router.get('/hello', ctx => {
+    ctx.body = 'hello'
+})
 router.get('/(.*)', handle)
 
 const app = new Koa()

@@ -73,7 +73,8 @@ module.exports = {
         new CleanWebpackPlugin({
             cleanOnceBeforeBuildPatterns: path.resolve(__dirname, '../../build/server')
         }),
-        new AutoRestartSSRServerPlugin()
+        // 是否启用nodemon
+        new AutoRestartSSRServerPlugin(true)
         // new webpack.HotModuleReplacementPlugin()
     ],
     resolve: {

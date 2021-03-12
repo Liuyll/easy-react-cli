@@ -18,7 +18,7 @@ if(module.hot){
           test.innerHTML = hello()
       })
     */
-    module.hot.accept('./')
+    module.hot.accept(['./', './components/Shop.tsx'])
 }
 
 const App:React.SFC<any> = function(props){

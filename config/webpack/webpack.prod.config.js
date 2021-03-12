@@ -6,7 +6,7 @@ const webpack = require('webpack')
 const PRODUCTION_CONFIG = {
     mode: 'production',
     plugins: [
-        new UglifyPlugin(),
+        // new UglifyPlugin(),
         new webpack.NamedChunksPlugin()
     ]
 }

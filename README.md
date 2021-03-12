@@ -8,6 +8,23 @@
 + 简单的数据`preload`
 + 配置化路由
 
+## 使用
+```
+npm run dev:ssr
+```
+
+此时：
++ `localhost:9000`为客户端渲染
++ `localhost:8080`为服务端渲染
+
+### config
++ `mode`: 生产或开发模式
++ `devPort`: 开发模式客户端渲染端口
++ `injectScripts`: `webpack dev`打包出来的客户端渲染文件，不修改`webpack`配置情况下不需要改动
++ `injectCss`: 同上
++ `useLayout`: 是否使用自定义`layout`
++ `buildOptions`: 构建配置
++ `useStreamResponse`: 是否使用流式渲染
 ## analysis
 
 ### 热更新
