@@ -18,5 +18,8 @@ module.exports = {
         debug: true
     },
     // stream res
-    useStreamResponse: true
+    useStreamResponse: true,
+    production: {
+        urlPrefix: './'
+    }
 }

@@ -3,9 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const tools = require('./tools/tools')
 const { judgeMode } = require('./tools/tools')
-const serverPath = './'
 
 module.exports = {
     entry: {
@@ -15,7 +13,6 @@ module.exports = {
         path: path.resolve(__dirname,'../../build/client'),
         filename: this.mode === 'production' ? '[name].[contenthash:8].file.js' : '[name].file.js',
         chunkFilename: this.mode === 'production' ? '[name].[chunkhash:8].chunk.js' : '[name].chunk.js',
-        publicPath: tools.judgeMode(this.mode,'/',serverPath),
     },
     module: {
         rules: [

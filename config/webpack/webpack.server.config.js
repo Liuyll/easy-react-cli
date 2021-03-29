@@ -11,7 +11,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname,'../../build/server'),
         filename: 'server.bundle.js',
-        publicPath: 'localhost:9000',
+        publicPath: 'http://localhost:9000',
         libraryTarget: 'commonjs2'
     },
     watchOptions: {
