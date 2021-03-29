@@ -1,44 +1,14 @@
 const webpack = require('webpack')
-const clientConfig = require('../webpack.dev.config')
+const clientConfig = require('../webpack.prod.client.config')
 const serverConfig = require('../webpack.server.config')
-const WebpackDevServer = require('webpack-dev-server')
-const path = require('path')
-const devPort = require('../../../ssrConfig/config').devPort
 const chalk = require('chalk')
 const Log = require('../../../log')
 const log = Log.log
 
+// prod: only pack bundle
 function startClient() {
     return new Promise(resolve => {
-        const compilerClient = webpack(clientConfig)
-        compilerClient.hooks.done.tap('done', () => {
-            resolve()
-        })
-        compilerClient.hooks.watchRun.tap('mutationReady', ((init) => () => !init ? log(chalk.green.bold('client dev server restarting...')) : init = false)(true))
-        compilerClient.hooks.done.tap('mutationNotify', ((init) => () => !init ? log(chalk.green.bold('client dev server restart success!\r\n')) : init = false)(true))
-
-        const server = new WebpackDevServer(
-            compilerClient,
-            {
-                historyApiFallback: {
-                    rewrites: [{
-                        from: /.*/g,
-                        to: '/'
-                    }]
-                },
-                writeToDisk: true,
-                contentBase: [path.resolve(__dirname, '../../../public'), path.resolve(__dirname, '../../../build/client')],
-                port: devPort,
-                compress: false,
-                quiet: true,
-                // hmr start
-                hot: true,
-                // inline: true,
-                open: false
-            }
-        )
-      
-        server.listen(devPort)
+        webpack(clientConfig, resolve)
     })
 }
 

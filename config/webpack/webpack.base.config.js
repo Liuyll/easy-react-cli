@@ -5,14 +5,15 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { judgeMode } = require('./tools/tools')
 
-module.exports = {
+module.exports = (mode) => ({
+    mode,
     entry: {
         index: path.resolve(__dirname,'../../src/index.tsx')
     },
     output: {
         path: path.resolve(__dirname,'../../build/client'),
-        filename: this.mode === 'production' ? '[name].[contenthash:8].file.js' : '[name].file.js',
-        chunkFilename: this.mode === 'production' ? '[name].[chunkhash:8].chunk.js' : '[name].chunk.js',
+        filename: mode === 'production' ? '[name].[contenthash:8].file.js' : '[name].file.js',
+        chunkFilename: mode === 'production' ? '[name].[chunkhash:8].chunk.js' : '[name].chunk.js',
     },
     module: {
         rules: [
@@ -63,12 +64,12 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname,'../../src/index.html'),
             inject: true,
-            filename: judgeMode(this.mode, 'index.html', 'index-produce.html'),
+            filename: judgeMode(mode, 'index.html', 'index-produce.html'),
             title: 'easy-react-cli',
         }),
         new MiniCssExtractPlugin({
-            filename: '[name].css',
-            chunkFilename: '[id].css',
+            filename: judgeMode(mode, '[name].css', '[name].[hash].css'),
+            chunkFilename: judgeMode(mode, '[id].css', '[id].[hash].css'),
         }),
         new CleanWebpackPlugin({
             cleanOnceBeforeBuildPatterns: path.resolve(__dirname, '../../build/client')
@@ -121,4 +122,4 @@ module.exports = {
         },
         extensions: ['.ts', '.tsx', '.js', '.jsx']
     }
-}
+})

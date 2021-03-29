@@ -3,10 +3,12 @@ const clientConfig = require('../webpack.dev.config')
 const serverConfig = require('../webpack.server.config')
 const WebpackDevServer = require('webpack-dev-server')
 const path = require('path')
-const devPort = require('../../../ssrConfig/config').devPort
+const config = require('../../../ssrConfig/config')
 const chalk = require('chalk')
 const Log = require('../../../log')
 const log = Log.log
+
+const { devPort } = config
 
 function startClient() {
     return new Promise(resolve => {

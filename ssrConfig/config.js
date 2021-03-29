@@ -1,6 +1,6 @@
 module.exports = {
-    // prod
-    mode: 'dev',
+    // prod | dev
+    mode: 'prod',
     devPort: 9000,
     // webpack chunk name
     injectScripts: [
@@ -20,6 +20,7 @@ module.exports = {
     // stream res
     useStreamResponse: true,
     production: {
-        urlPrefix: './'
+        urlPrefix: './',
+        chunkHash: true
     }
 }

@@ -5,7 +5,8 @@
     "dev-ip": "webpack-dev-server --config config/webpack/webpack.dev.config.js --open --colors --host 0.0.0.0 --useLocalIp",
     "build:server:dev": "webpack --watch --config config/webpack/webpack.server.config.js --progress --colors --mode=development",
     "build:client:dev": "webpack --config config/webpack/webpack.base.config.js --progress --colors --mode=development",
-    "dev:ssr": "node config/webpack/scripts/dev-runner.js"
+    "dev:ssr": "node config/webpack/scripts/dev-runner.js",
+    "prod:ssr": "node config/webpack/scripts/prod-runner.js"
   },
   "devDependencies": {
     "@babel/core": "^7.7.5",

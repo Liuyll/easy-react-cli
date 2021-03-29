@@ -24,7 +24,10 @@ async function handle(ctx, next){
         devPort,
         mode,
         useLayout,
-        useStreamResponse
+        useStreamResponse,
+        production: {
+            chunkHash
+        }
     } = configs
 
     let prefix = mode === 'dev' ? `http://localhost:${devPort}/` : '/'
@@ -57,39 +60,46 @@ async function handle(ctx, next){
         html = stream
     }
     else {
+        let layout 
         if(useLayout) {
-            const layout = require('../ssrConfig/layout').default
-            const inlineScript = `window.__INITIAL_STATE__ = ${JSON.stringify(serverState)}`
-            const props = { app, css: injectCss, scripts: injectScripts, inlineScript }
-            const el = renderComponent.customLayout ? renderComponent.customLayout(props) : layout(props)
-            if(useStreamResponse) {
-                const stream = generateHtmlStreamFromElement(el)
-                ctx.body = stream
-                ctx.set('Content-Type', 'text/html; charset=utf-8')
-                return next()
-            } else {
-                html = generateHtmlFromElement(el)
-            }
+            layout = require('../ssrConfig/layout').default
         } else {
-            const injectStateScript = serverState ? `<script>window.__INITIAL_STATE__ = ${JSON.stringify(serverState)}</script>` : ''
-            const domStr = ReactDomServer.renderToString(app)
-            html = 
-            `
-                <!DOCTYPE html>
-                <html lang="en">
-                    <head>
-                        <meta charset="UTF-8">
-                    </head>
-                    <link href="${prefix}index.css" rel="stylesheet">
-                    <body>
-                        <div id="app">${domStr}</div>
-                    </body>
-                    ${injectStateScript}
-                    <script src='${prefix}runtime~index.file.js'></script>
-                    <script src='${prefix}vendor.chunk.js'></script>
-                    <script src='${prefix}index.chunk.js'></script>
-                </html>
-            `
+            layout = require('../ssrConfig/default_layout').default
+        }
+
+        // 处理bundle hash
+        if(mode === 'prod' && chunkHash) {
+            const templateHtml = fs.readFileSync(path.resolve(__dirname, '../build/client/index-produce.html')).toString()
+            const jsPattern = /<script type="text\/javascript" src="(.*?)"><\/script>/g
+            const cssPattern = /<link href="(.*?)" rel="stylesheet">/g
+
+            const replaceScripts = []
+            const replaceCss = []
+
+            const scripts = templateHtml.matchAll(jsPattern)
+            for(let script of scripts) {
+                replaceScripts.push(script[1])
+            }
+
+            const css = templateHtml.matchAll(cssPattern)
+            for(let _css of css) {
+                replaceCss.push(_css[1])
+            }
+
+            injectScripts = replaceScripts
+            injectCss = replaceCss
+        }
+
+        const inlineScript = `window.__INITIAL_STATE__ = ${JSON.stringify(serverState)}`
+        const props = { app, css: injectCss, scripts: injectScripts, inlineScript }
+        const el = renderComponent.customLayout ? renderComponent.customLayout(props) : layout(props)
+        if(useStreamResponse) {
+            const stream = generateHtmlStreamFromElement(el)
+            ctx.body = stream
+            ctx.set('Content-Type', 'text/html; charset=utf-8')
+            return next()
+        } else {
+            html = generateHtmlFromElement(el)
         }
     }
     ctx.body = html

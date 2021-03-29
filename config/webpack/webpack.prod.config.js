@@ -1,11 +1,11 @@
 const merge = require('webpack-merge')
-const COMMON_CONFIG = require('./webpack.base.config')
+const common = require('./webpack.base.config')
 const UglifyPlugin = require('uglifyjs-webpack-plugin')
 const webpack = require('webpack')
 
 const config = require('../../ssrConfig/config')
 const { production: { urlPrefix } } = config
-const PRODUCTION_CONFIG = {
+const productConfig = {
     mode: 'production',
     plugins: [
         // new UglifyPlugin(),
@@ -16,4 +16,4 @@ const PRODUCTION_CONFIG = {
     }
 }
 
-module.exports = merge(COMMON_CONFIG,PRODUCTION_CONFIG)
+module.exports = merge(common('production'), productConfig)
