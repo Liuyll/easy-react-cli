@@ -34,3 +34,6 @@ npm run dev:ssr
 + 服务端
 
     对于服务端的热更新有点巧妙，我们把`dev-server`的生产文件持久化到`output`位置，并且读取`dev-server`产生的`update.js`进行热更新。
+
+### 快速切换csr/ssr
+只需要在`ssr`的访问url里添加查询参数`?csr=true`即可完成`csr`切换。

@@ -50,10 +50,11 @@ async function handle(ctx, next){
     let html 
 
     if(ctx.query && ctx.query.csr) {
-        ctx.set('Connection', 'Close')
+        // ctx.set('Keep-Alive', 'timeout=5')
         const indexPath = mode === 'dev' ? '../build/client/index.html' : '../build/client/index-produce.html'
         ctx.set('Content-Type', 'text/html; charset=utf-8')
-        html = fs.createReadStream(path.resolve(__dirname, indexPath))
+        const stream = fs.createReadStream(path.resolve(__dirname, indexPath))
+        html = stream
     }
     else {
         if(useLayout) {
@@ -65,8 +66,7 @@ async function handle(ctx, next){
                 const stream = generateHtmlStreamFromElement(el)
                 ctx.body = stream
                 ctx.set('Content-Type', 'text/html; charset=utf-8')
-                next()
-                return 
+                return next()
             } else {
                 html = generateHtmlFromElement(el)
             }

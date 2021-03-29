@@ -34,8 +34,13 @@ app.use(Static(
 ))
 
 app.on('error', (err,ctx) => {
-    if(err.code === 'ECONNRESET' && ctx.url === 'vendor.chunk.js') {
-        // pass
+    if(err.code === 'ECONNRESET' && ctx.url.includes('vendor.chunk.js')) {
+        // console.log(err)
+        // 暂时没法解决复用链接的问题
+        /**
+         * econnreset出现的原因是server复用了已经被客户端发fin的链接，客户端发reset后导致报错
+         * 定位到的原因是koa-static上的静态资源
+         */
     }
     else console.error(err)
 })
