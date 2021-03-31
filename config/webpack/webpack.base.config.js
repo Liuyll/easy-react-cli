@@ -8,16 +8,18 @@ const tools = require('./tools/tools')
 const getEntries = tools.getEntries
 const generateHTMLPlugin = tools.generateHTMLPlugin
 const serverPath = '/'
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 
-module.exports = {
+module.exports = (mode) => ({
+    mode,
     entry: {
         ...getEntries()
     },
     output: {
         path: path.resolve(__dirname,'../../build'),
-        filename: this.mode === 'production' ? '[name].[contenthash:8].file.js' : '[name].[hash:8].file.js',
-        chunkFilename: this.mode === 'production' ? '[name].[chunkhash:8].chunk.js' : '[name].[hash:8].chunk.js',
-        publicPath: tools.judgeMode(this.mode,'/',serverPath),
+        filename: mode === 'production' ? '[name].[contenthash:8].file.js' : '[name].[hash:8].file.js',
+        chunkFilename: mode === 'production' ? '[name].[chunkhash:8].chunk.js' : '[name].[hash:8].chunk.js',
+        publicPath: tools.judgeMode(mode ,'/',serverPath),
     },
     module: {
         rules: [
@@ -37,11 +39,11 @@ module.exports = {
             },
             {
                 test: /\.css/,
-                use: [this.mode === 'production' ? MiniCssExtractPlugin.loader : 'style-loader','css-loader']
+                use: [mode === 'production' ? MiniCssExtractPlugin.loader : 'style-loader','css-loader']
             },
             {
                 test: /\.less/,
-                use: [this.mode === 'production' ? MiniCssExtractPlugin.loader : 'style-loader','css-loader','less-loader']
+                use: [mode === 'production' ? MiniCssExtractPlugin.loader : 'style-loader','css-loader','less-loader']
             },
             {
                 test: /\.(js|jsx)$/,
@@ -75,7 +77,8 @@ module.exports = {
         // new AnalyzerPlugin({
         //     analyzerPort: 8889
         // }),
-        ...generateHTMLPlugin(HtmlWebpackPlugin)
+        ...generateHTMLPlugin(HtmlWebpackPlugin),
+        new HardSourceWebpackPlugin()
     ],
     optimization: {
         minimizer: [
@@ -130,4 +133,4 @@ module.exports = {
         },
         extensions: ['.ts', '.tsx', '.js', '.jsx']
     }
-}
+})

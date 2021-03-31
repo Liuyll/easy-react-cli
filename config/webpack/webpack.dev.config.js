@@ -3,8 +3,7 @@ const merge = require('webpack-merge')
 const mocktools = require('./tools/mocktool')
 const path = require('path')
 
-module.exports = merge(common,{
-    mode: 'development',
+module.exports = merge(common('development'), {
     devtool: 'inline-source-map',
     devServer: {
         historyApiFallback: {
