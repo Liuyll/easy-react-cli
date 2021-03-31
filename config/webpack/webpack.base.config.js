@@ -7,15 +7,16 @@ const tools = require('./tools/tools')
 const { judgeMode } = require('./tools/tools')
 const serverPath = '/'
 
-module.exports = {
+module.exports = (mode) => ({
+    mode,
     entry: {
         index: path.resolve(__dirname,'../../src/index.tsx')
     },
     output: {
         path: path.resolve(__dirname,'../../build'),
-        filename: this.mode === 'production' ? '[name].[contenthash:8].file.js' : '[name].[hash:8].file.js',
-        chunkFilename: this.mode === 'production' ? '[name].[chunkhash:8].chunk.js' : '[name].[hash:8].chunk.js',
-        publicPath: tools.judgeMode(this.mode,'/',serverPath),
+        filename: mode === 'production' ? '[name].[contenthash:8].file.js' : '[name].[hash:8].file.js',
+        chunkFilename: mode === 'production' ? '[name].[chunkhash:8].chunk.js' : '[name].[hash:8].chunk.js',
+        publicPath: judgeMode(mode,'/',serverPath),
     },
     module: {
         rules: [
@@ -66,7 +67,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname,'../../src/index.html'),
             inject: true,
-            filename: judgeMode(this.mode, 'index.html', 'index-produce.html')
+            filename: judgeMode(mode, 'index.html', 'index-produce.html')
         }),
         new MiniCssExtractPlugin({
             filename: '[name].css',
@@ -123,4 +124,4 @@ module.exports = {
         },
         extensions: ['.ts', '.tsx', '.js', '.jsx']
     }
-}
+})

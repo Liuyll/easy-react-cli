@@ -2,9 +2,9 @@ const common = require('./webpack.base.config')
 const merge = require('webpack-merge')
 const mocktools = require('./tools/mocktool')
 const path = require('path')
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 
-module.exports = merge(common,{
-    mode: 'development',
+module.exports = merge(common('development'),{
     devtool: 'inline-source-map',
     devServer: {
         historyApiFallback: {
@@ -21,5 +21,7 @@ module.exports = merge(common,{
         inline: true,
         before: (app) => mocktools(app)
     },
-    plugins: []
+    plugins: [
+        new HardSourceWebpackPlugin()
+    ]
 })
